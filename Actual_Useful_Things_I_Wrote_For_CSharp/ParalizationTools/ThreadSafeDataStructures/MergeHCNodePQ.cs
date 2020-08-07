@@ -1,5 +1,4 @@
-﻿using BenchMarkingWithPrimeNumbers;
-using ParalizationTools.ComputeTrees;
+﻿using ParalizationTools.ComputeTrees;
 using System;
 using System.Collections.Generic;
 using System.Text;
