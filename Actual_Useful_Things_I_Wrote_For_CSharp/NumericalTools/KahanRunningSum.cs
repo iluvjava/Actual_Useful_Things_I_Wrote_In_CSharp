@@ -8,6 +8,9 @@ using System.Text;
 namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
 {
 
+    /// <summary>
+    ///     It's just a class that wraps the summation of al array. 
+    /// </summary>
     public static class KahanSummation {
 
         /// <summary>
@@ -60,8 +63,8 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
         {
             get {
                 return Math.Round(this._RunningSum + this._Compensator, 15);
+                // It's rounded, and the last addiction has to rouund it, so that it's accurate. 
             }
-
         }
         
         public int CompareTo(double other)

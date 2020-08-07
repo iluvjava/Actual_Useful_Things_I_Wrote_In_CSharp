@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
 {
-    class BigFractions
+    public class BigFraction
     {
         protected BigInteger _Numerator;
         protected BigInteger _Denominator;
@@ -15,9 +15,13 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
         /// </summary>
         /// <param name="numerator"></param>
         /// <param name="denominator"></param>
-        public BigFractions(BigInteger numerator, BigInteger denominator)
-        { 
-            
+        public BigFraction(BigInteger numerator, BigInteger denominator)
+        {
+            if (denominator.Equals(BigInteger.Zero)) 
+            {
+                throw new ArgumentException("denominator cannot be zero. "); 
+            }
+
         }
            
         /// <summary>
@@ -26,7 +30,7 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
         /// <param name="value">
         ///     
         /// </param>
-        public BigFractions(double value)
+        public BigFraction(double value)
         { 
         
         }
