@@ -8,14 +8,45 @@ using System.Text;
 namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
 {
 
+    public static class KahanSummation {
+
+        /// <summary>
+        ///     Sums up an array of double with minimum lost on the precision. 
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        public static double Sum(double[] array)
+        {
+            double Result = 0; 
+            {
+                double RunningSum = 0, Compensator = 0;
+                foreach (double D in array)
+                {
+                    double Temp = RunningSum + D;
+                    if (Math.Abs(RunningSum) >= Math.Abs(D))
+                    {
+                        Compensator += (RunningSum  - Temp) + D;
+                    }
+                    else 
+                    {
+                        Compensator += (D - Temp) + RunningSum;
+                    }
+                }
+            }
+            return Result;
+        }
+    }
+
     /// <summary>
-    ///     Use This class anytime when you are summing up floats in a for-loop and shit. 
-    ///     
+    ///     Use This class anytime when you are summing up floats in a for-loop and shit.     
     ///     <para>
     ///         This class is mutable. 
     ///     </para>
+    ///     <para> 
+    ///         This class uses double precision to keep track of things.     
+    ///     </para>
     /// </summary>
-    public class KahanRunningSum : IComparable<double>
+    public class KahanRunningSum : IComparable<double>, IComparable<KahanRunningSum>
     {
         protected double _RunningSum;
         protected double _Compensator = 0;
@@ -25,8 +56,6 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
             _RunningSum = initial;
         }
 
-        
-
         public double Value
         {
             get {
@@ -35,12 +64,46 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
 
         }
         
-        public int CompareTo([AllowNull] double other)
+        public int CompareTo(double other)
         {
             return Math.Sign(this.Value - other);
         }
-        
-        public static KahanRunningSum operator +(KahanRunningSum theSum, double beingAdded) {
+
+        public override bool Equals(object obj)
+        {
+            if (Object.ReferenceEquals(this, obj)) return true; 
+            if (obj is KahanRunningSum)
+            {
+                KahanRunningSum other = obj as KahanRunningSum;
+                return this.Value == other.Value;
+            }
+            if (obj is double)
+            {
+                return this.Value == (double)obj; 
+            }
+            return base.Equals(obj);
+        }
+
+        /// <summary>
+        ///     It appeared just to please the IDE. 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public int CompareTo([AllowNull] KahanRunningSum other)
+        {
+            if (other is null)
+            {
+                return -1;
+            }
+            return this.CompareTo(other.Value); 
+        }
+
+        public static KahanRunningSum operator +(KahanRunningSum theSum, double beingAdded)
+        {
             double Temp = theSum._RunningSum + beingAdded;
             if (Math.Abs(theSum._RunningSum) >= Math.Abs(beingAdded))
             {
@@ -58,7 +121,6 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
         {
             return theSum + (-beingSubtradted);
         }
-
 
         public static bool operator <(KahanRunningSum theSum, KahanRunningSum other)
         {
@@ -80,16 +142,40 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
             return theSum.CompareTo(other) == 1;
         }
 
+        public static bool operator >=(KahanRunningSum theSum, double other)
+        {
+            int sign = theSum.CompareTo(other);
+            return sign == 1 || sign == 0;
+        }
 
+        public static bool operator <=(KahanRunningSum theSum, double other)
+        {
+            return !(theSum > other);
+        }
 
+        public static bool operator >=(KahanRunningSum theSum, KahanRunningSum other)
+        {
+            return other <= theSum.Value;
+        }
 
+        public static bool operator <=(KahanRunningSum theSum, KahanRunningSum other)
+        {
+            return other >= theSum.Value; 
+        }
 
+        public static bool operator ==(KahanRunningSum theSum, double other)
+        {
+            return theSum.Value == other;
+        }
 
+        public static bool operator !=(KahanRunningSum theSum, double other)
+        {
+            return !(theSum == other);  
+        }
 
     }
 
     /// <summary>
-    /// 
     ///     For summing up the complex numbers that is supported by CSharp. 
     /// </summary>
     public class KahanRunningSumComplex
