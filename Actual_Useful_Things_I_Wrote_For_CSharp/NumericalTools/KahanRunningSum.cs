@@ -25,10 +25,7 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
             _RunningSum = initial;
         }
 
-        public int CompareTo([AllowNull] double other)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public double Value
         {
@@ -37,7 +34,12 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
             }
 
         }
-
+        
+        public int CompareTo([AllowNull] double other)
+        {
+            return Math.Sign(this.Value - other);
+        }
+        
         public static KahanRunningSum operator +(KahanRunningSum theSum, double beingAdded) {
             double Temp = theSum._RunningSum + beingAdded;
             if (Math.Abs(theSum._RunningSum) >= Math.Abs(beingAdded))
@@ -52,10 +54,35 @@ namespace Actual_Useful_Things_I_Wrote_For_CSharp.NumericalTools
             return theSum;
         }
 
-        public static KahanRunningSum operator - (KahanRunningSum theSum, double beingSubtradted)
+        public static KahanRunningSum operator -(KahanRunningSum theSum, double beingSubtradted)
         {
             return theSum + (-beingSubtradted);
         }
+
+
+        public static bool operator <(KahanRunningSum theSum, KahanRunningSum other)
+        {
+            return theSum.Value < other.Value;   
+        }
+
+        public static bool operator >(KahanRunningSum theSum, KahanRunningSum other)
+        {
+            return theSum.Value > other.Value;
+        }
+
+        public static bool operator <(KahanRunningSum theSum, double other)
+        {
+            return theSum.CompareTo(other) == -1; 
+        }
+
+        public static bool operator > (KahanRunningSum theSum, double other)
+        {
+            return theSum.CompareTo(other) == 1;
+        }
+
+
+
+
 
 
 
