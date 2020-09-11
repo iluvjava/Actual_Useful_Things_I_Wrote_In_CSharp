@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using DataStructure.UnionFind;
+using NUnit.Framework;
 
 namespace All_The_Testing
 {
@@ -12,6 +13,8 @@ namespace All_The_Testing
         [Test]
         public void Test1()
         {
+            
+
             Assert.Pass();
         }
     }
